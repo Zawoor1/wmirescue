@@ -6,7 +6,8 @@ LANG=C
 VERSION="$(date +%g.%m)"
 
 SOFTWARE="acl acpi-support-base attr bash-completion bind9-host binutils \
-  bridge-utils bsdmainutils debootstrap dmidecode dosfstools ethtool file gddrescue gdisk \
+  bridge-utils bsdmainutils ca-certificates debootstrap dialog \
+  dmidecode dosfstools ethtool file gddrescue gdisk \
   hddtemp hdparm ifenslave iproute2 iputils-ping less lsof lvm2 lzip mdadm \
   mtr-tiny netcat-traditional net-tools ntfs-3g parted pciutils pixz procps \
   psmisc rsync screen scrub smartmontools ssh strace sysstat tar tcpdump \
