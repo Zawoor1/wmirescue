@@ -4,7 +4,7 @@ TARGET=$1
 VERSION=$(date +%g.%m)
 OUTPUT=${TARGET}/output/${VERSION}
 DEBIAN_CODENAME='buster'
-KERNEL_VERSION='4.19.0-5-amd64'
+KERNEL_VERSION='4.19.0-8-amd64'
 ARCH='amd64'
 
 umask 022
