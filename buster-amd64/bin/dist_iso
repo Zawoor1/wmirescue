@@ -6,6 +6,7 @@ OUTPUT=$3
 NOFIRMWARE=$4
 
 TEMP_DIR=$(mktemp -d)
+SCRIPTDIR="$(dirname "$(realpath "$0")")"
 
 APPEND_FIRMWARE="/rescue/firmware.img"
 FILENAME="wmirescue_$ARCH.iso"
@@ -61,7 +62,7 @@ echo
 TEMP_DIR_GRUB=$(mktemp -d)
 
 #BIOS
-cp media/black.png $TEMP_DIR/boot/
+cp ${SCRIPTDIR}/../media/black.png $TEMP_DIR/boot/
 cp /usr/share/grub/unicode.pf2 $TEMP_DIR/boot/bios/fonts/
 
 grub-mkimage -O i386-pc -p /boot/bios/ -o ${TEMP_DIR_GRUB}/core.img iso9660 biosdisk

@@ -14,26 +14,27 @@ if [ -z "${TARGET}" ]; then
     exit 255
 fi
 
+SCRIPTDIR="$(dirname "$(realpath "$0")")"
 
 mkdir ${TARGET}
 mkdir ${TARGET}/ramdisk
 mkdir ${TARGET}/firmware
 mkdir -p ${OUTPUT}/netboot/${ARCH}
 
-./bin/basefs_init ${TARGET}/basefs ${DEBIAN_CODENAME}
+${SCRIPTDIR}/bin/basefs_init ${TARGET}/basefs ${DEBIAN_CODENAME}
 
 cp -a ${TARGET}/basefs ${TARGET}/rootfs
 cp -a ${TARGET}/basefs ${TARGET}/helperfs
 
-./bin/helperfs_config ${TARGET}/helperfs ${KERNEL_VERSION}
+${SCRIPTDIR}/bin/helperfs_config ${TARGET}/helperfs ${KERNEL_VERSION}
 
 # ROOTFS
 
 mkdir -p ${TARGET}/rootfs/lib/modules
 rsync -aS ${TARGET}/helperfs/lib/modules/ ${TARGET}/rootfs/lib/modules/
-./bin/rootfs_config ${TARGET}/rootfs ${DEBIAN_CODENAME}
-./bin/rootfs_clear ${TARGET}/rootfs
-./bin/rootfs_mksquashfs ${TARGET}/rootfs ${TARGET}/ramdisk/rootfs.squash
+${SCRIPTDIR}/bin/rootfs_config ${TARGET}/rootfs ${DEBIAN_CODENAME}
+${SCRIPTDIR}/bin/rootfs_clear ${TARGET}/rootfs
+${SCRIPTDIR}/bin/rootfs_mksquashfs ${TARGET}/rootfs ${TARGET}/ramdisk/rootfs.squash
 
 # RAMDISK
 
@@ -43,13 +44,13 @@ mkdir -p ${TARGET}/ramdisk/lib/modules
 mkdir -p ${TARGET}/ramdisk/proc
 mkdir -p ${TARGET}/ramdisk/sys
 cp ${TARGET}/helperfs/bin/busybox ${TARGET}/ramdisk/bin/busybox
-./bin/ramdisk_modules ${TARGET}/ramdisk ${TARGET}/rootfs ${KERNEL_VERSION}
-./bin/ramdisk_config ${TARGET}/ramdisk ${KERNEL_VERSION}
-./bin/ramdisk_make ${OUTPUT}/netboot/${ARCH}/initrd.img ${TARGET}/ramdisk
+${SCRIPTDIR}/bin/ramdisk_modules ${TARGET}/ramdisk ${TARGET}/rootfs ${KERNEL_VERSION}
+${SCRIPTDIR}/bin/ramdisk_config ${TARGET}/ramdisk ${KERNEL_VERSION}
+${SCRIPTDIR}/bin/ramdisk_make ${OUTPUT}/netboot/${ARCH}/initrd.img ${TARGET}/ramdisk
 
 # FIRMWARE
 tar cf ${TARGET}/firmware/firmware.tar --owner=root --group=root -C ${TARGET}/helperfs ./lib/firmware
-./bin/ramdisk_make ${OUTPUT}/netboot/firmware.img ${TARGET}/firmware
+${SCRIPTDIR}/bin/ramdisk_make ${OUTPUT}/netboot/firmware.img ${TARGET}/firmware
 
 # KERNEL
 
@@ -58,7 +59,7 @@ cp ${TARGET}/helperfs/boot/vmlinuz-${KERNEL_VERSION} ${OUTPUT}/netboot/${ARCH}/v
 
 # DIST
 tar cvf ${OUTPUT}/wmirescue_${ARCH}-netboot.tar -C ${OUTPUT}/netboot .
-./bin/dist_ipxe ${VERSION} ${OUTPUT}
-./bin/dist_ipxe ${VERSION} ${OUTPUT} --nofirmware
-./bin/dist_iso ${VERSION} ${ARCH} ${OUTPUT}
-./bin/dist_iso ${VERSION} ${ARCH} ${OUTPUT} --nofirmware
+${SCRIPTDIR}/bin/dist_ipxe ${VERSION} ${OUTPUT}
+${SCRIPTDIR}/bin/dist_ipxe ${VERSION} ${OUTPUT} --nofirmware
+${SCRIPTDIR}/bin/dist_iso ${VERSION} ${ARCH} ${OUTPUT}
+${SCRIPTDIR}/bin/dist_iso ${VERSION} ${ARCH} ${OUTPUT} --nofirmware
