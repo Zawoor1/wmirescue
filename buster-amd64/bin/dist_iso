@@ -7,7 +7,7 @@ NOFIRMWARE=$4
 
 TEMP_DIR=$(mktemp -d)
 
-APPEND_FIRMWARE=",/rescue/firmware.img"
+APPEND_FIRMWARE="/rescue/firmware.img"
 FILENAME="wmirescue_$ARCH.iso"
 
 mkdir -p $TEMP_DIR/boot/bios/i386-pc
@@ -104,12 +104,12 @@ set theme="/boot/theme.txt"
 
 menuentry "wmirescue-$ARCH" {
     linux /rescue/$ARCH/vmlinuz
-    initrd /rescue/$ARCH/initrd.img /rescue/firmware.img
+    initrd /rescue/$ARCH/initrd.img $APPEND_FIRMWARE
 }
 
 menuentry "wmirescue-$ARCH-serial" {
     linux /rescue/$ARCH/vmlinuz console=ttyS0,115200n8
-    initrd /rescue/$ARCH/initrd.img /rescue/firmware.img
+    initrd /rescue/$ARCH/initrd.img $APPEND_FIRMWARE
 }
 
 menuentry "memtest" {
@@ -128,12 +128,12 @@ set theme="/boot/theme.txt"
 
 menuentry "wmirescue-$ARCH" {
     linux /rescue/$ARCH/vmlinuz
-    initrd /rescue/$ARCH/initrd.img /rescue/firmware.img
+    initrd /rescue/$ARCH/initrd.img $APPEND_FIRMWARE
 }
 
 menuentry "wmirescue-$ARCH-serial" {
     linux /rescue/$ARCH/vmlinuz console=ttyS0,115200n8
-    initrd /rescue/$ARCH/initrd.img /rescue/firmware.img
+    initrd /rescue/$ARCH/initrd.img $APPEND_FIRMWARE
 }
 
 menuentry "memtest" {
